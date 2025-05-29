@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\TasksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,13 @@ Route::group([
     Route::post('logout', 'AuthenticationController@logout');
     Route::post('refresh', 'AuthenticationController@refresh');
     Route::post('me', 'AuthenticationController@me');
+});
+
+// Tasks Routes
+Route::group([
+    'middleware' => 'api',
+    'prefix' => '/tasks'
+], function ($router) {
+    Route::get('/', [TasksController::class, 'index']);
+    Route::post('/create', 'AuthenticationController@refresh');
 });
