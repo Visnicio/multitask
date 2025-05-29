@@ -1,2 +1,28 @@
-<h2>Sobre</h2>
-<p>{{ mensagem }}</p>
+<form name="loginForm" ng-submit="login()" novalidate class="card p-4 mx-auto" style="max-width: 400px;">
+    <h2 class="text-center mb-4">Login</h2>
+
+    <!-- Email -->
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" ng-model="user_email" required class="form-control"
+            placeholder="seu@email.com">
+        <div class="text-danger small mt-1" ng-show="loginForm.email.$touched && loginForm.email.$invalid">
+            Email inválido.
+        </div>
+    </div>
+
+    <!-- Senha -->
+    <div class="mb-4">
+        <label for="password" class="form-label">Senha</label>
+        <input type="password" id="password" name="password" ng-model="user_password" required class="form-control"
+            placeholder="••••••••">
+        <div class="text-danger small mt-1" ng-show="loginForm.password.$touched && loginForm.password.$invalid">
+            A senha é obrigatória.
+        </div>
+    </div>
+
+    <!-- Botão -->
+    <button type="submit" class="btn btn-primary w-100" ng-disabled="loginForm.$invalid">
+        Entrar
+    </button>
+</form>
