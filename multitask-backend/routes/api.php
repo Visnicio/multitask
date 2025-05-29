@@ -14,16 +14,12 @@ Route::get("/hello-world", function(Request $request){
 
 
 // Auth Routes
+Route::post('auth/login', [AuthenticationController::class, 'login']);
 Route::group([
-
     'middleware' => 'api',
-    'prefix' => 'auth'
-
+    'prefix' => '/auth'
 ], function ($router) {
-
-    Route::post('login', [AuthenticationController::class, 'login']);
     Route::post('logout', 'AuthenticationController@logout');
     Route::post('refresh', 'AuthenticationController@refresh');
     Route::post('me', 'AuthenticationController@me');
-
 });

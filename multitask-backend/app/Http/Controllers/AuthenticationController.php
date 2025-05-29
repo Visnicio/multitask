@@ -9,7 +9,7 @@ use App\Services\AuthenticationService;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
-class AuthenticationController extends Controller implements HasMiddleware
+class AuthenticationController extends Controller
 {
     private AuthenticationService $authenticationService;
 
@@ -24,17 +24,6 @@ class AuthenticationController extends Controller implements HasMiddleware
     }
 
     /**
-     * Get the middleware that should be assigned to the controller.
-     */
-    public static function middleware(): array
-    {
-        return [
-            'auth',
-            new Middleware('auth:api', except: ['login']),
-        ];
-    }
-
-    /**
      * Get a JWT via given credentials.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -43,8 +32,8 @@ class AuthenticationController extends Controller implements HasMiddleware
     {
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (! $token = Auth::attempt($credentials)) {
+            return response()->json(['error' => 'Credentials Invalid'], 401);
         }
 
         return $this->respondWithToken($token);
@@ -57,7 +46,7 @@ class AuthenticationController extends Controller implements HasMiddleware
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(Auth::user());
     }
 
     /**
@@ -67,7 +56,7 @@ class AuthenticationController extends Controller implements HasMiddleware
      */
     public function logout()
     {
-        auth()->logout();
+        Auth::logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
@@ -79,7 +68,7 @@ class AuthenticationController extends Controller implements HasMiddleware
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
+        return $this->respondWithToken(Auth::refresh());
     }
 
     /**
@@ -94,7 +83,7 @@ class AuthenticationController extends Controller implements HasMiddleware
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => Auth::factory()->getTTL() * 60
         ]);
     }
 }

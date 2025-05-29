@@ -16,8 +16,6 @@ class AuthenticationService
     public function authenticateUser(string $email, string $password): bool {
         $authenticated = false;
 
-        $user = $this->usersRepositorie->findByEmailAndPassword($email, $password) ;
-
         return $authenticated = $user ? true : false;
     }
 }
