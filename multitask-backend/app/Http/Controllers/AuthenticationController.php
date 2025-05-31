@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Services\AuthenticationService;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
-use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Routing\Controllers\HasMiddleware;
 
 class AuthenticationController extends Controller
 {
@@ -23,6 +20,22 @@ class AuthenticationController extends Controller
     public function __construct(AuthenticationService $authenticationService)
     {
         $this->authenticationService = $authenticationService;
+    }
+
+    public function register(Request $request) {
+        
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string'
+        ]);
+
+        if ($this->authenticationService->registerNewUser($validated['name'], $validated['email'], $validated['password'])) {
+            return response()->json(['message' => 'User registered successfully'], 201);
+        } else {
+            return response()->json(['error' => 'Failed to register user'], 500);
+        }
+
     }
 
     /**
@@ -50,9 +63,9 @@ class AuthenticationController extends Controller
     {
         try {
             $user = auth("api")->user();
-            // if (!$user) {
-            //     return response()->json(['error' => 'User not found'], 404);
-            // }
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
             return response()->json($user);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Failed to fetch user profile'], 500);

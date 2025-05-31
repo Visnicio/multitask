@@ -13,9 +13,13 @@ class AuthenticationService
         $this->usersRepositorie = $usersRepository;
     }
 
-    public function authenticateUser(string $email, string $password): bool {
-        $authenticated = false;
+    public function registerNewUser(string $name, string $email, string $password): bool {
+        $user = User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => bcrypt($password)
+        ]);
 
-        return $authenticated = $user ? true : false;
+        return $user ? true : false;
     }
 }
