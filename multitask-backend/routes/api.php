@@ -22,12 +22,12 @@ Route::group([
 ], function ($router) {
     Route::post('logout', 'AuthenticationController@logout');
     Route::post('refresh', 'AuthenticationController@refresh');
-    Route::post('me', 'AuthenticationController@me');
+    Route::post('/me',  [AuthenticationController::class, 'me']);
 });
 
 // Tasks Routes
 Route::group([
-    'middleware' => 'api',
+    'middleware' => 'auth:api',
     'prefix' => '/tasks'
 ], function ($router) {
     Route::get('/', [TasksController::class, 'index']);

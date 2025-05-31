@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Services\AuthenticationService;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
@@ -32,7 +34,7 @@ class AuthenticationController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (! $token = Auth::attempt($credentials)) {
+        if (!$token = auth("api")->attempt($credentials)) {
             return response()->json(['error' => 'Credentials Invalid'], 401);
         }
 
@@ -46,7 +48,15 @@ class AuthenticationController extends Controller
      */
     public function me()
     {
-        return response()->json(Auth::user());
+        try {
+            $user = auth("api")->user();
+            // if (!$user) {
+            //     return response()->json(['error' => 'User not found'], 404);
+            // }
+            return response()->json($user);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to fetch user profile'], 500);
+        }
     }
 
     /**
@@ -83,7 +93,7 @@ class AuthenticationController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL() * 60
+            'expires_in' => auth("api")->factory()->getTTL() * 60
         ]);
     }
 }
