@@ -4,7 +4,6 @@ angular.module('multitask-front')
     $scope.currentUser = authService.getCurrentUser();
     $rootScope.$on('userChanged', function() {
       $scope.currentUser = authService.getCurrentUser();
-      alert("index")
     })
 
     $scope.logout = function() {
