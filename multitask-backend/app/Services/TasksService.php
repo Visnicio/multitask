@@ -46,4 +46,8 @@ class TasksService {
         $task->save();
         return $task;
     }
+
+    public function deleteTask($taskId) {
+        return $this->tasksRepository->deleteTask($taskId);
+    }
 }

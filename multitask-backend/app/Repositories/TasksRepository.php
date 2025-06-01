@@ -20,4 +20,8 @@ class TasksRepository {
     public function createTask(array $data) {
         return Task::create($data);
     }
+
+    public function deleteTask(int $taskId) {
+        return Task::destroy($taskId);
+    }
 }

@@ -36,4 +36,8 @@ class TasksController extends Controller
     public function switchTaskStatus(Request $request) {
         return $this->tasksService->switchTaskStatus($request->input("id"));
     }
+
+    public function deleteTask(Request $request) {
+        return $this->tasksService->deleteTask($request->input("id"));
+    }
 }

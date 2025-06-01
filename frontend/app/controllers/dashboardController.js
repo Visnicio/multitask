@@ -41,5 +41,15 @@ angular.module('multitask-front')
             });
     };
 
+    $scope.deleteTask = function(taskId) {
+        tasksService.deleteTask(taskId)
+            .then(function(response) {
+                $scope.loadUserTasks();
+            })
+            .catch(function(error) {
+                console.error("Erro ao excluir tarefa:", error);
+            });
+    };
+
     $scope.loadUserTasks();
   });
