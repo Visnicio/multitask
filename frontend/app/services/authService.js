@@ -1,5 +1,5 @@
 angular.module('multitask-front')
-  .service('authService', function($http, $window) {
+  .service('authService', function($http, $window, $location) {
     
     this.attemptLogin = function(user_email, user_password) {
       return $http({
@@ -15,20 +15,42 @@ angular.module('multitask-front')
       });
     };
 
+    this.requestUserData = function() {
+        return $http({
+        method: 'POST',
+        url: 'http://localhost/api/auth/me',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json'
+        }
+      });
+    }
+
     this.setUser = function(user) {
-      $window.localStorage.setItem('loggedUser', JSON.stringify(user));
+        $window.localStorage.setItem('loggedUser', JSON.stringify(user));
     };
 
     this.getCurrentUser = function() {
-      const user = $window.localStorage.getItem('loggedUser');
-      return user ? JSON.parse(user) : null;
+        const user = $window.localStorage.getItem('loggedUser');
+        return user ? JSON.parse(user) : null;
     };
 
     this.isLoggedIn = function() {
-      return !!this.getCurrentUser();
+        return !!this.getCurrentUser();
     };
 
     this.logout = function() {
-      $window.localStorage.removeItem('loggedUser');
+        $http({
+            method: 'POST',
+            url: 'http://localhost/api/auth/logout',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            }
+        });
+        $window.localStorage.removeItem('token');
+        $window.localStorage.removeItem('loggedUser');
+
+        $location.path('/login');
     };
   });
