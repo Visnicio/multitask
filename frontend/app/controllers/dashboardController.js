@@ -1,7 +1,13 @@
 angular.module('multitask-front')
-  .controller('dashboardController', function($scope, dashboardService) {
+  .controller('dashboardController', function($scope, dashboardService, tasksService) {
     
     $scope.tasks = []; // An array of objects containing task data
+
+    $scope.newTask = {
+        title: "",
+        description: "",
+        due_date: ""
+    };
 
     $scope.loadUserTasks = function($http){
         dashboardService.getUserTasks()
@@ -13,8 +19,8 @@ angular.module('multitask-front')
             });
     }
 
-    $scope.createTask = function(title, description, due_date) {
-        dashboardService.createNewTask(title, description, due_date)
+    $scope.createTask = function(newTask) {
+        tasksService.createNewTask(newTask.title, newTask.description, newTask.due_date)
             .then(function(response) {
                 $scope.loadUserTasks();
             })
