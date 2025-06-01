@@ -7,6 +7,9 @@ angular.module('multitask-front')
         data: {
             email: user_email,
             password: user_password
+        },
+        headers: {
+            'Content-Type': 'application/json'
         }
       });
     };

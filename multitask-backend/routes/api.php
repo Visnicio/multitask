@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\TasksController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Auth Routes
@@ -14,6 +13,7 @@ Route::group([
     Route::post('/logout',   [AuthenticationController::class, 'logout']);
     Route::post('/refresh',  [AuthenticationController::class, 'refresh']);
     Route::post('/register', [Authenticationcontroller::class, 'register']);
+    Route::post('/me',       [AuthenticationController::class, 'me']);
 });
 
 // Tasks Routes
@@ -21,7 +21,6 @@ Route::group([
     'middleware' => ['api', 'auth:api'],
     'prefix' => '/tasks'
 ], function ($router) {
-    Route::post('/me',     [AuthenticationController::class, 'me']);
     Route::get('/',        [TasksController::class, 'index']);
     Route::post('/create', [TasksController::class, 'create']);
 });

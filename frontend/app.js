@@ -9,6 +9,10 @@ angular.module('multitask-front', ['ngRoute'])
       templateUrl: 'app/views/login.html',
       controller: 'loginController'
     })
+    .when('/dashboard', {
+      templateUrl: 'app/views/dashboard.html',
+      // controller: 'dashboardController'
+    })
     .otherwise({
       redirectTo: '/'
     });
