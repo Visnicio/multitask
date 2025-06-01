@@ -11,33 +11,69 @@ class TasksController extends Controller
 {
     private $tasksService;
 
-
-    public function __construct(TasksService $tasksService) {
+    public function __construct(TasksService $tasksService)
+    {
         $this->tasksService = $tasksService;
     }
 
-    public function index() {
-        return $this->tasksService->getAllUserTasks(Auth::user()->id);
+    public function index()
+    {
+        $userId = Auth::user()->id;
+        return response()->json($this->tasksService->getAllUserTasks($userId));
     }
 
-    public function create(Request $request) {
-        $validated_arr = $request->validate([
-            'title' => 'required|string',
+    public function create(Request $request)
+    {
+        $validated = $request->validate([
+            'title'       => 'required|string',
             'description' => 'required|string',
-            'due_date' => 'required|date'
+            'due_date'    => 'required|date',
         ]);
 
-        $due_date = Carbon::parse($validated_arr['due_date'])->format('Y-m-d');
+        $dueDate = Carbon::parse($validated['due_date'])->format('Y-m-d');
 
-        $response = $this->tasksService->createNewTask($validated_arr['title'], $validated_arr['description'], $due_date);
-        return response()->json($response);
+        $task = $this->tasksService->createNewTask(
+            Auth::user()->id,
+            $validated['title'],
+            $validated['description'],
+            $dueDate
+        );
+
+        return response()->json($task, 201);
     }
 
-    public function switchTaskStatus(Request $request) {
-        return $this->tasksService->switchTaskStatus($request->input("id"));
+    public function switchTaskStatus(Request $request)
+    {
+        $id = $request->input('id');
+        $updated = $this->tasksService->switchTaskStatus($id);
+        return response()->json($updated);
     }
 
-    public function deleteTask(Request $request) {
-        return $this->tasksService->deleteTask($request->input("id"));
+    public function deleteTask($id)
+    {
+        $deleted = $this->tasksService->deleteTask($id);
+        return response()->json([
+            'deleted' => $deleted
+        ]);
+    }
+
+    public function updateTask(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title'       => 'required|string',
+            'description' => 'required|string',
+            'due_date'    => 'required|date',
+        ]);
+
+        $dueDate = Carbon::parse($validated['due_date'])->format('Y-m-d');
+
+        $task = $this->tasksService->updateTask(
+            $id,
+            $validated['title'],
+            $validated['description'],
+            $dueDate
+        );
+
+        return response()->json($task);
     }
 }

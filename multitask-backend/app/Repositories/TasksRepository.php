@@ -24,4 +24,13 @@ class TasksRepository {
     public function deleteTask(int $taskId) {
         return Task::destroy($taskId);
     }
+
+    public function updateTask(int $taskId, string $title, string $description, string $dueDate) {
+        $task = Task::find($taskId);
+        $task->title = $title;
+        $task->description = $description;
+        $task->due_date = $dueDate;
+        $task->save();
+        return $task;
+    }
 }

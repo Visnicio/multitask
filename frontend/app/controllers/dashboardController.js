@@ -1,55 +1,83 @@
 angular.module('multitask-front')
   .controller('dashboardController', function($scope, dashboardService, tasksService, authService) {
-    
-    $scope.tasks = []; // An array of objects containing task data
 
-    $scope.newTask = {
-        title: "",
-        description: "",
-        due_date: ""
+    $scope.tasks = [];
+    $scope.newTask = { id: null, title: "", description: "", due_date: "" };
+    $scope.currentUser = authService.getCurrentUser();
+    $scope.modalTitle  = "";
+    $scope.modalButton = "";
+
+    $scope.loadUserTasks = function() {
+      dashboardService.getUserTasks()
+        .then(function(response) {
+          $scope.tasks = response.data.map(function(t) {
+            if (t.due_date) {
+              t.due_date = new Date(t.due_date).toISOString().substring(0, 10);
+            }
+            return t;
+          });
+        })
+        .catch(function(error) {
+          console.error("Erro ao carregar tarefas:", error);
+        });
     };
 
-    $scope.currentUser = authService.getCurrentUser();
+    $scope.openCreateModal = function() {
+      $scope.modalTitle  = "Nova Tarefa";
+      $scope.modalButton = "Criar";
+      $scope.newTask = { id: null, title: "", description: "", due_date: "" };
+    };
 
-    $scope.loadUserTasks = function($http){
-        dashboardService.getUserTasks()
-            .then(function(response) {
-                $scope.tasks = response.data;
-            })
-            .catch(function(error) {
-                console.error("Erro ao carregar tarefas:", error);
-            });
-    }
+    $scope.openEditModal = function(task) {
+      $scope.modalTitle  = "Editar Tarefa";
+      $scope.modalButton = "Atualizar";
+      $scope.newTask = {
+        id:          task.id,
+        title:       task.title,
+        description: task.description,
+        due_date:    task.due_date
+      };
+    };
 
-    $scope.createTask = function(newTask) {
-        tasksService.createNewTask(newTask.title, newTask.description, newTask.due_date)
-            .then(function(response) {
-                $scope.loadUserTasks();
-            })
-            .catch(function(error) {
-                console.error("Erro ao criar tarefa:", error);
-            });
+    $scope.submitTask = function() {
+      if ($scope.newTask.id) {
+        tasksService.updateTask(
+          $scope.newTask.id,
+          $scope.newTask.title,
+          $scope.newTask.description,
+          $scope.newTask.due_date
+        ).then(function() {
+          $scope.loadUserTasks();
+          let modalEl = document.getElementById('taskModal');
+          bootstrap.Modal.getInstance(modalEl).hide();
+        });
+      } else {
+        tasksService.createNewTask(
+          $scope.newTask.title,
+          $scope.newTask.description,
+          $scope.newTask.due_date
+        ).then(function() {
+          $scope.loadUserTasks();
+          let modalEl = document.getElementById('taskModal');
+          bootstrap.Modal.getInstance(modalEl).hide();
+        });
+      }
     };
 
     $scope.switchTaskStatus = function(taskId) {
-        tasksService.switchTaskStatus(taskId)
-            .then(function(response) {
-                $scope.loadUserTasks();
-            })
-            .catch(function(error) {
-                console.error("Erro ao alterar status da tarefa:", error);
-            });
+      tasksService.switchTaskStatus(taskId)
+        .then(function() {
+          $scope.loadUserTasks();
+        });
     };
 
     $scope.deleteTask = function(taskId) {
-        tasksService.deleteTask(taskId)
-            .then(function(response) {
-                $scope.loadUserTasks();
-            })
-            .catch(function(error) {
-                console.error("Erro ao excluir tarefa:", error);
-            });
+      tasksService.deleteTask(taskId)
+        .then(function() {
+          $scope.loadUserTasks();
+        });
     };
 
+    // Carrega ao iniciar
     $scope.loadUserTasks();
   });

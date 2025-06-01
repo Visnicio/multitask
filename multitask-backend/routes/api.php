@@ -21,9 +21,9 @@ Route::group([
     'middleware' => ['api', 'auth:api'],
     'prefix' => '/tasks'
 ], function ($router) {
-    Route::get('/',        [TasksController::class, 'index']);
-    Route::post('/create', [TasksController::class, 'create']);
-    Route::post('/switchTaskStatus', [TasksController::class, 'switchTaskStatus']);
-    Route::post('/switchTaskStatus', [TasksController::class, 'switchTaskStatus']);
-    Route::post('/deleteTask', [TasksController::class, 'deleteTask']);
+    Route::get('/',                   [TasksController::class, 'index']);
+    Route::post('/',                  [TasksController::class, 'create']);
+    Route::patch('/switchTaskStatus', [TasksController::class, 'switchTaskStatus']);
+    Route::delete('/{id}',      [TasksController::class, 'deleteTask']);
+    Route::patch('/{id}',       [TasksController::class, 'updateTask']);
 });

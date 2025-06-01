@@ -50,4 +50,8 @@ class TasksService {
     public function deleteTask($taskId) {
         return $this->tasksRepository->deleteTask($taskId);
     }
+
+    public function updateTask($taskId, string $title, string $description, string $dueDate) {
+        return $this->tasksRepository->updateTask($taskId, $title, $description, $dueDate);
+    }
 }
