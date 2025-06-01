@@ -23,4 +23,5 @@ Route::group([
 ], function ($router) {
     Route::get('/',        [TasksController::class, 'index']);
     Route::post('/create', [TasksController::class, 'create']);
+    Route::post('/switchTaskStatus', [TasksController::class, 'switchTaskStatus']);
 });

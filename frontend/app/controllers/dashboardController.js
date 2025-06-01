@@ -31,5 +31,15 @@ angular.module('multitask-front')
             });
     };
 
+    $scope.switchTaskStatus = function(taskId) {
+        tasksService.switchTaskStatus(taskId)
+            .then(function(response) {
+                $scope.loadUserTasks();
+            })
+            .catch(function(error) {
+                console.error("Erro ao alterar status da tarefa:", error);
+            });
+    };
+
     $scope.loadUserTasks();
   });

@@ -14,9 +14,10 @@
                 <p class="card-text text-muted">Prazo: {{ task.due_date }}</p>
               </div>
               <div class="form-check ms-3">
-                <input class="form-check-input" type="checkbox" ng-model="task.completed"
-                  ng-change="toggleTaskCompletion(task)">
+                <input class="form-check-input" type="checkbox"
+                  ng-click="switchTaskStatus(task.id)" ng-model="task.is_done == 1 ? true : false">
                 <label class="form-check-label">Concluída</label>
+                
               </div>
             </div>
             <button class="btn btn-danger mt-3 w-100" ng-click="deleteTask(task.id)">

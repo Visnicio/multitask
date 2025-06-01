@@ -26,7 +26,8 @@ class TasksService {
             'title' => $title,
             'description' => $description,
             'due_date' => $dueDate,
-            'user_id' => auth("api")->user()->id
+            'user_id' => auth("api")->user()->id,
+            'is_done' => false
         ]);
 
         if ($task) {
@@ -37,5 +38,12 @@ class TasksService {
             $response['status'] = "error";
         }
         return $response;
+    }
+
+    public function switchTaskStatus($taskId) {
+        $task = $this->tasksRepository->findById($taskId);
+        $task->is_done = !$task->is_done;
+        $task->save();
+        return $task;
     }
 }

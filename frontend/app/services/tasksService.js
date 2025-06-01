@@ -16,4 +16,17 @@ angular.module('multitask-front')
       });
     };
 
+    this.switchTaskStatus = function(taskId) {
+      return $http({
+        method: 'POST',
+        url: 'http://localhost/api/tasks/switchTaskStatus',
+        data: {
+          id: taskId
+        },
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      });
+    }
+
   });

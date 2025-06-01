@@ -32,4 +32,8 @@ class TasksController extends Controller
         $response = $this->tasksService->createNewTask($validated_arr['title'], $validated_arr['description'], $due_date);
         return response()->json($response);
     }
+
+    public function switchTaskStatus(Request $request) {
+        return $this->tasksService->switchTaskStatus($request->input("id"));
+    }
 }
