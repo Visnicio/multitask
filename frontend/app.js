@@ -13,6 +13,9 @@ angular.module('multitask-front', ['ngRoute'])
       templateUrl: 'app/views/dashboard.html',
       // controller: 'dashboardController'
     })
+    .when('/register', {
+      templateUrl: 'app/views/register.html',
+    })
     .otherwise({
       redirectTo: '/'
     });

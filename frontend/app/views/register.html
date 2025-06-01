@@ -1,0 +1,48 @@
+<form name="registerForm" ng-controller="registrationController" ng-submit="register()" novalidate class="card p-4 mx-auto" style="max-width: 400px;">
+    <h2 class="text-center mb-4">Registrar-se</h2>
+
+    <!-- Nome -->
+    <div class="mb-3">
+        <label for="name" class="form-label">Nome</label>
+        <input type="text" id="name" name="name" ng-model="user_name" required class="form-control"
+            placeholder="Seu nome completo">
+        <div class="text-danger small mt-1" ng-show="registerForm.name.$touched && registerForm.name.$invalid">
+            O nome é obrigatório.
+        </div>
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" ng-model="user_email" required class="form-control"
+            placeholder="seu@email.com">
+        <div class="text-danger small mt-1" ng-show="registerForm.email.$touched && registerForm.email.$invalid">
+            Email inválido.
+        </div>
+    </div>
+
+    <!-- Senha -->
+    <div class="mb-3">
+        <label for="password" class="form-label">Senha</label>
+        <input type="password" id="password" name="password" ng-model="user_password" required class="form-control"
+            placeholder="••••••••">
+        <div class="text-danger small mt-1" ng-show="registerForm.password.$touched && registerForm.password.$invalid">
+            A senha é obrigatória.
+        </div>
+    </div>
+
+    <!-- Confirmação de Senha -->
+    <div class="mb-4">
+        <label for="confirmPassword" class="form-label">Confirmar Senha</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" ng-model="user_password_confirmation"
+            required class="form-control" placeholder="••••••••">
+        <div class="text-danger small mt-1" ng-show="registerForm.confirmPassword.$touched && registerForm.confirmPassword.$invalid">
+            Confirme sua senha.
+        </div>
+    </div>
+
+    <!-- Botão -->
+    <button type="submit" class="btn btn-success w-100" ng-disabled="registerForm.$invalid">
+        Registrar
+    </button>
+</form>

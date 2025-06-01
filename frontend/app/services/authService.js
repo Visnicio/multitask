@@ -15,6 +15,21 @@ angular.module('multitask-front')
       });
     };
 
+    this.attemptRegister = function(user_name, user_email, user_password) {
+      return $http({
+        method: 'POST',
+        url: 'http://localhost/api/auth/register',
+        data: {
+            name: user_name,
+            email: user_email,
+            password: user_password
+        },
+        headers: {
+            'Content-Type': 'application/json'
+        }
+      });
+    };
+
     this.requestUserData = function() {
         return $http({
         method: 'POST',

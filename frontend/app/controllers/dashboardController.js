@@ -1,5 +1,5 @@
 angular.module('multitask-front')
-  .controller('dashboardController', function($scope, dashboardService, tasksService) {
+  .controller('dashboardController', function($scope, dashboardService, tasksService, authService) {
     
     $scope.tasks = []; // An array of objects containing task data
 
@@ -8,6 +8,8 @@ angular.module('multitask-front')
         description: "",
         due_date: ""
     };
+
+    $scope.currentUser = authService.getCurrentUser();
 
     $scope.loadUserTasks = function($http){
         dashboardService.getUserTasks()
