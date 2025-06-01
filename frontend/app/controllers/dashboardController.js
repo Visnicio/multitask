@@ -13,6 +13,15 @@ angular.module('multitask-front')
             });
     }
 
+    $scope.createTask = function(title, description, due_date) {
+        dashboardService.createNewTask(title, description, due_date)
+            .then(function(response) {
+                $scope.loadUserTasks();
+            })
+            .catch(function(error) {
+                console.error("Erro ao criar tarefa:", error);
+            });
+    };
 
     $scope.loadUserTasks();
   });
