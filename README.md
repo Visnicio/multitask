@@ -16,17 +16,44 @@ O backend roda via **Laravel Sail**, e o frontend será empacotado em um contain
 1. **Clone o projeto no local desejado**  
 
 ## 1. Configuração do Backend (Laravel Sail)
-1. Acesse o diretorio do backend
+1. Acesse o diretorio do backend `cd multitask-backend`
 1. Instale as dependencias do sail
-```bash
-docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v $(pwd):/var/www/html \
-    -w /var/www/html \
-    laravelsail/php81-composer:latest \
-    composer install --ignore-platform-reqs
-```
-2. Inicie o container
+    1. Linux
+        ```bash
+        docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v $(pwd):/var/www/html \
+        -w /var/www/html \
+        laravelsail/php81-composer:latest \
+        composer update laravel/sail
+        ```
+        E depois
+        ```bash
+        docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v $(pwd):/var/www/html \
+        -w /var/www/html \
+        laravelsail/php81-composer:latest \
+        composer install --ignore-platform-reqs
+        ```
+   2. Windows
+        ```bash
+        docker run --rm `
+        -u "${UID}:${GID}" `
+        -v ${PWD}:/var/www/html `
+        -w /var/www/html `
+        laravelsail/php81-composer:latest `
+        composer update laravel/sail
+        ```
+        E depois
+        ```bash
+        docker run --rm `
+        -v ${PWD}:/var/www/html `
+        -w /var/www/html `
+        laravelsail/php81-composer:latest `
+        composer install --ignore-platform-reqs
+        ```
+3. Inicie o container
 ```bash
 sail up -d
 ```
