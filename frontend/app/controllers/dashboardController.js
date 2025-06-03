@@ -12,7 +12,7 @@ angular.module('multitask-front')
         .then(function(response) {
           $scope.tasks = response.data.map(function(t) {
             if (t.due_date) {
-              t.due_date = new Date(t.due_date).toISOString().substring(0, 10);
+              t.due_date = new Date(t.due_date);
             }
             return t;
           });
