@@ -22,11 +22,10 @@ angular.module('multitask-front')
                         return;
                     }
                     authService.setUser(response.data);
-                })
 
-                $rootScope.$broadcast('userChanged');
-                $location.path('/dashboard');
-                
+                    $rootScope.$broadcast('userChanged');
+                    $location.path('/dashboard');
+                })
             })
         }
     });
