@@ -35,7 +35,7 @@ angular.module('multitask-front')
         id:          task.id,
         title:       task.title,
         description: task.description,
-        due_date:    task.due_date
+        due_date:    new Date(task.due_date)
       };
     };
 

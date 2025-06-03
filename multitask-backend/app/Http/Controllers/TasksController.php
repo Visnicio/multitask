@@ -33,7 +33,6 @@ class TasksController extends Controller
         $dueDate = Carbon::parse($validated['due_date'])->format('Y-m-d');
 
         $task = $this->tasksService->createNewTask(
-            Auth::user()->id,
             $validated['title'],
             $validated['description'],
             $dueDate
